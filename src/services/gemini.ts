@@ -15,6 +15,7 @@ export interface GeneratedTopic {
   intro: string;
   essence: string;
   bPerspective: string;
+  refLink?: string;
 }
 
 export const generateRadioTopic = async (trends: TrendItem[]): Promise<GeneratedTopic[]> => {
@@ -67,7 +68,15 @@ JSON形式（Markdownのコードブロックなし）で、以下の配列を�
     // Clean up potential markdown blocks
     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
 
-    const topics: GeneratedTopic[] = JSON.parse(text);
+    const rawTopics: GeneratedTopic[] = JSON.parse(text);
+
+    // Merge original links
+    // Assuming 1:1 mapping based on order. The Prompt mandates 1 object per input.
+    const topics = rawTopics.map((topic, index) => ({
+      ...topic,
+      refLink: trends[index]?.link
+    }));
+
     return topics;
   } catch (e) {
     console.error("Gemini generation failed", e);

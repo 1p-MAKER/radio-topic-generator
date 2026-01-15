@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { fetchTrends, type TrendItem } from '../services/newsFetcher';
 import { generateRadioTopic, type GeneratedTopic } from '../services/gemini';
+import { saveTopicToFirestore } from '../services/firebase';
 import { TopicCard } from './TopicCard';
 import { TopicSelectionList } from './TopicSelectionList';
 import styles from './TopicGenerator.module.css';
@@ -115,7 +116,11 @@ export const TopicGenerator = () => {
                         </button>
                     </div>
                     {topics.map((topic, i) => (
-                        <TopicCard key={i} topic={topic} />
+                        <TopicCard
+                            key={i}
+                            topic={topic}
+                            onSave={() => saveTopicToFirestore(topic)}
+                        />
                     ))}
                 </div>
             )}
