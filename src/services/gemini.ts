@@ -21,7 +21,7 @@ export interface GeneratedTopic {
 export const generateRadioTopic = async (trends: TrendItem[]): Promise<GeneratedTopic[]> => {
   if (!trends || trends.length === 0) return [];
 
-  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   // Pick top 15 trends to avoid token limits (though flash has context)
   const trendText = trends.slice(0, 20).map(t => `- [${t.source}] ${t.title} (${t.description || ''})`).join('\n');
